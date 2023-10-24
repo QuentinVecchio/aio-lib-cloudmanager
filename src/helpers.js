@@ -68,6 +68,17 @@ function isWithinFiveMinutesOfUTCMidnight (date) {
 }
 
 /** @private */
+function isWithinTenMinutesOfUTCMidnight (date) {
+  const currentUTCHours = date.getUTCHours()
+  const currentUTCMinutes = date.getUTCMinutes()
+  if ((currentUTCHours === 23 && currentUTCMinutes >= 50) || (currentUTCHours === 0 && currentUTCMinutes <= 10)) {
+    return true
+  } else {
+    return false
+  }
+}
+
+/** @private */
 async function sleep (msec) {
   return new Promise(resolve => setTimeout(resolve, msec))
 }
@@ -77,5 +88,6 @@ module.exports = {
   getWaitingStep,
   findStepState,
   isWithinFiveMinutesOfUTCMidnight,
+  isWithinTenMinutesOfUTCMidnight,
   sleep,
 }

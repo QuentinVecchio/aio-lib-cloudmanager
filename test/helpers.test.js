@@ -10,7 +10,7 @@ governing permissions and limitations under the License.
 */
 
 const halfred = require('halfred')
-const { isWithinFiveMinutesOfUTCMidnight, sleep, findStepState } = require('../src/helpers')
+const { isWithinFiveMinutesOfUTCMidnight, isWithinTenMinutesOfUTCMidnight, sleep, findStepState } = require('../src/helpers')
 const execution1007 = halfred.parse(require('./jest/data/execution1007.json'))
 const executionWithoutPerformanceTesting = halfred.parse(require('./jest/data/execution-no-performance.json'))
 
@@ -27,6 +27,17 @@ test('isWithinFiveMinutesOfUTCMidnight', async () => {
   expect(isWithinFiveMinutesOfUTCMidnight(utcDate3)).toEqual(true)
   const utcDate4 = new Date(Date.UTC(2019, 9, 12, 0, 6, 0))
   expect(isWithinFiveMinutesOfUTCMidnight(utcDate4)).toEqual(false)
+})
+
+test('isWithinTenMinutesOfUTCMidnight', async () => {
+  const utcDate1 = new Date(Date.UTC(2019, 9, 12, 23, 50, 14))
+  expect(isWithinTenMinutesOfUTCMidnight(utcDate1)).toEqual(true)
+  const utcDate2 = new Date(Date.UTC(2019, 9, 12, 23, 49, 14))
+  expect(isWithinTenMinutesOfUTCMidnight(utcDate2)).toEqual(false)
+  const utcDate3 = new Date(Date.UTC(2019, 9, 12, 0, 9, 14))
+  expect(isWithinTenMinutesOfUTCMidnight(utcDate3)).toEqual(true)
+  const utcDate4 = new Date(Date.UTC(2019, 9, 12, 0, 11, 0))
+  expect(isWithinTenMinutesOfUTCMidnight(utcDate4)).toEqual(false)
 })
 
 test('sleep', async () => {

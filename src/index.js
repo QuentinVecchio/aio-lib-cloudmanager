@@ -24,7 +24,7 @@ const clone = require('lodash.clone')
 const cloneDeep = require('lodash.clonedeep')
 const { codes } = require('./SDKErrors')
 const { rels, basePath, problemTypes } = require('./constants')
-const { getCurrentStep, getWaitingStep, findStepState, isWithinFiveMinutesOfUTCMidnight, sleep } = require('./helpers')
+const { getCurrentStep, getWaitingStep, findStepState, isWithinTenMinutesOfUTCMidnight, sleep } = require('./helpers')
 
 require('./sdktypes.jsdoc') // for VS Code autocomplete
 require('./types.jsdoc') // for VS Code autocomplete
@@ -887,10 +887,10 @@ class CloudManagerAPI {
         logger.debug('no new content available')
         await sleep(2000)
         /**
-         * Handles the rollover around UTC midnight using delta of 5 minutes before and after midnight
+         * Handles the rollover around UTC midnight using delta of 10 minutes before and after midnight
          * to account for client's clock synchronisation
          */
-        if (isWithinFiveMinutesOfUTCMidnight(new Date(Date.now()))) {
+        if (isWithinTenMinutesOfUTCMidnight(new Date(Date.now()))) {
           tailingSasUrl = await this._getTailingSasUrl(programId, environment, service, name)
           const startLimit = await this._getLogFileSizeInitialSize(tailingSasUrl)
           logger.debug(`restarting tail from ${tailingSasUrl} and minimum content length ${startLimit}.`)
